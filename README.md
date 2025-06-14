@@ -6,18 +6,18 @@ The framework incorporates Google Cloud best practices for performance, security
 
 2. Table of Contents
 
-a.  Features
-b.  Architecture
-c.  Prerequisites
-d.  Setup and Configuration
-e.  Running the Migration
-f.  Agent Definitions and Roles
-g.  Cost Considerations
-h.  Troubleshooting
-i.  Contributing
-j. License
+I.  Features
+II.  Architecture
+III.  Prerequisites
+IV.  Setup and Configuration
+V.  Running the Migration
+VI.  Agent Definitions and Roles
+VII.  Cost Considerations
+VIII.  Troubleshooting
+IX.  Contributing
+X. License
 
- a. Features
+ I. Features
 
 - Automated GCP Environment Setup: Programmatically provisions Cloud SQL instances, VPC networks, and Cloud Storage buckets.
 - Intelligent Schema Conversion: Analyzes legacy MySQL schemas, identifies incompatibilities, and generates Cloud SQL-compatible DDL scripts, leveraging LLMs for complex refactoring.
@@ -28,14 +28,14 @@ j. License
 - Secure Credential Management: Integrates with GCP Secret Manager for secure storage and access of sensitive credentials (database passwords, API keys).
 - Built on Autogen, allowing for easy extension and modification of agent behaviors and workflows.
 
- b. Architecture
+ II. Architecture
 
 The migration process is orchestrated by a central `Main Orchestrator` within the Autogen framework. This orchestrator coordinates a team of specialized AI agents, each responsible for a specific aspect of the migration. These agents interact with various Google Cloud Platform (GCP) services via their respective APIs and leverage Large Language Models (LLMs) (e.g., Gemini) for intelligent reasoning and dynamic code generation.
 
 A critical aspect of the architecture is the presence of robust feedback loops, where monitoring and logging data from Cloud SQL flow back to the Anomaly Detection and Performance Optimization agents. This enables self-correction and continuous improvement throughout the migration lifecycle.
 
 
- 3. Prerequisites
+ III. Prerequisites
 
 Before running the migration, ensure you have the following:
 
@@ -47,20 +47,20 @@ Before running the migration, ensure you have the following:
 - `mysqldump` and `mysql` clients: Installed on the machine where the Autogen agents will run if local exports/imports are used (as shown in some code examples).
 - Secret Manager: Gemini API key and database credentials securely stored in GCP Secret Manager.
 
- 4. Setup and Configuration
+ IV. Setup and Configuration
 
-1.  Clone the Repository:
+-  Clone the Repository:
     ```bash
     git clone <repository_url>
     cd automated-mysql-cloudsql-migration
     ```
 
-2.  Install Python Dependencies:
+-  Install Python Dependencies:
     ```bash
     pip install -r requirements.txt
     ```
 
-3.  Configure GCP Project and Service Account:
+-  Configure GCP Project and Service Account:
      Create Service Account:
         ```bash
         gcloud iam service-accounts create autogen-migration-sa \
@@ -99,7 +99,7 @@ Before running the migration, ensure you have the following:
         ```
         Place `autogen-migration-key.json` in a secure location (e.g., outside the repository). Update `Config.GCP_SERVICE_ACCOUNT_KEY_PATH` in `autogen_migration/config/settings.py` to point to this file.
 
-4.  Configure `settings.py`:
+-  Configure `settings.py`:
     Edit `autogen_migration/config/settings.py` with your specific project details:
 
     ```python
@@ -137,7 +137,7 @@ Before running the migration, ensure you have the following:
         }
     ```
 
-5.  Populate GCP Secret Manager:
+-  Populate GCP Secret Manager:
     Create the necessary secrets in Secret Manager:
      `legacy-mysql-user` (e.g., `root` or a dedicated migration user for your legacy MySQL)
      `legacy-mysql-password`
@@ -152,11 +152,11 @@ Before running the migration, ensure you have the following:
     echo "your_gemini_api_key" | gcloud secrets create gemini-api-key --data-file=- --project=your-gcp-project-id
     ```
 
- 5. Running the Migration
+ V. Running the Migration
 
 The `main.py` script acts as the entry point for the Autogen orchestrator. When you run it, the `UserProxyAgent` (`Admin`) initiates a chat with the `GroupChatManager`, which then coordinates the specialized agents to execute the migration workflow.
 
-1.  Set Environment Variables (Optional but Recommended):
+-  Set Environment Variables (Optional but Recommended):
     For deployment in GCP environments (e.g., Compute Engine, Cloud Run), it's best practice to set these as environment variables. For local testing, you can modify `main.py` or `settings.py` directly, but avoid hardcoding sensitive values.
 
     ```bash
@@ -168,7 +168,7 @@ The `main.py` script acts as the entry point for the Autogen orchestrator. When 
     export GCP_SERVICE_ACCOUNT_KEY_PATH="/path/to/your/autogen-migration-key.json"
     ```
 
-2.  Execute the Main Script:
+-  Execute the Main Script:
     Navigate to the root of your cloned repository and run:
 
     ```bash
@@ -177,7 +177,7 @@ The `main.py` script acts as the entry point for the Autogen orchestrator. When 
 
     The `user_proxy` agent is configured with `human_input_mode="ALWAYS"`, meaning it will pause and prompt for your input/approval at various stages of the migration. Follow the prompts in your terminal.
 
- 6. Agent Definitions and Roles
+ VI. Agent Definitions and Roles
 
 The framework consists of the following specialized Autogen agents:
 
@@ -189,7 +189,7 @@ The framework consists of the following specialized Autogen agents:
  Performance Optimization Agent: Continuously monitors Cloud SQL performance and suggests/applies optimizations such as index improvements, configuration adjustments, and instance scaling.
  Main Orchestrator: Defines the overall migration workflow, manages communication, and handles decision-making based on agent outputs.
 
- 7. Cost Considerations
+ VII. Cost Considerations
 
 Running this framework incurs costs related to various GCP components and LLM API usage. Key cost drivers and optimization techniques include:
 
@@ -201,7 +201,7 @@ Running this framework incurs costs related to various GCP components and LLM AP
  LLM API (e.g., Google Gemini): Charged per token for input and output. Optimize by choosing cost-effective models (e.g., Gemini 1.5 Flash for simpler tasks), concise prompts, and caching where applicable.
 
 
- 8. Troubleshooting
+ VIII. Troubleshooting
 
  Authentication Errors: Double-check your `GCP_PROJECT_ID` environment variable, the `GCP_SERVICE_ACCOUNT_KEY_PATH` in `settings.py`, and ensure the service account has all required IAM permissions.
  Secret Manager Access Issues: Verify the `secret_id` values in `settings.py` match the secrets created in Secret Manager, and that the service account has `secretmanager.secretAccessor` role.
@@ -210,16 +210,16 @@ Running this framework incurs costs related to various GCP components and LLM AP
  Agent Errors/Hangs: Review logs generated by the agents in the `logs/` directory and the console output for Python tracebacks. The LLM `api_key` configuration is crucial.
  LLM Rate Limits: If encountering LLM API errors, consider if you're hitting rate limits. Optimize prompts and potentially implement back-off/retry logic.
 
- 9. Contributing
+ IX. Contributing
 
 Contributions are welcome! Please follow standard GitHub practices (fork, branch, commit, pull request).
 
- 10. License
+ X. License
 
 This project is licensed under the [MIT License](LICENSE).
 
 
------------------------------------------------------------
+-----------------------------------------------------------AGENTIC AI CODE EXPLANATION------------------------------------------------
 
 Environment Setup Agent :
 
