@@ -1,0 +1,9 @@
+autogen
+google-cloud-sqladmin
+google-cloud-storage
+google-cloud-secret-manager
+google-cloud-monitoring
+google-cloud-logging
+pymysql
+pandas
+sqlalchemy
